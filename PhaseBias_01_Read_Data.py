@@ -123,6 +123,7 @@ LiCSAR_data = parameters["LiCSAR_data"]
 filtered_ifgs = parameters["filtered_ifgs"]
 landmask = parameters["landmask"]
 
+breakpoint()
 # hardcoded parameters, not included in the config file
 min_baseline = 5
 max_baseline = 366
@@ -284,7 +285,7 @@ def read_ifgs(
                             np.nan
                         )  ## converting the zerso values in wrapped phases into nan. This is helpful when calculating loop closures
 
-                        if landmask != None:
+                        if landmask == 1:
                             array_data[array_landmask != 1] = np.nan
 
                         if (
