@@ -99,7 +99,8 @@ try:
     )  # Assuming 'nlook' should be an integer
     parameters["num_a"] = config.getint("DEFAULT", "num_a")
     parameters["LiCSAR_data"] = config.get("DEFAULT", "LiCSAR_data")
-
+    parameters["filtered_ifgs"] = config.get("DEFAULT", "filtered_ifgs")
+    parameters["landmask"] = config.getint("DEFAULT", "landmask")  # 1 to include, 0 to not
 except configparser.NoOptionError as e:
     # Error message if a required parameter is missing
     missing_param = str(e).split(": ")[1]
@@ -120,10 +121,10 @@ interval = parameters["interval"]
 nlook = parameters["nlook"]
 num_a = parameters["num_a"]
 LiCSAR_data = parameters["LiCSAR_data"]
+filtered_ifgs = parameters["filtered_ifgs"]
+landmask = parameters["landmask"]
 
 # hardcoded parameters, not included in the config file
-landmask = 1
-filtered_ifgs = "yes"
 max_loop = 5  # in case of 3 all loops with 6,12,18-day will be calculated (e.g. (60,6), (60,12) and (60,18))
 
 

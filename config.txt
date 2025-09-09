@@ -4,7 +4,9 @@ root_path = /gws/nopw/j04/nceo_geohazards_vol1/public/LiCSAR_products/82/082D_05
 output_path = /work/scratch-pw2/earyma
 
 LiCSAR_data=yes
+filtered_ifgs=yes
 frame=082D_05125_020000
+landmask=1
 
 # Provide the start and end dates of the time-series that you want to calculate the phase bias correction
 start=20170522

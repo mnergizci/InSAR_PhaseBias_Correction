@@ -98,6 +98,8 @@ try:
     parameters["nlook"] = config.getint(
         "DEFAULT", "nlook")  # Assuming 'nlook' should be an integer
     parameters["LiCSAR_data"] = config.get("DEFAULT", "LiCSAR_data")
+    parameters["filtered_ifgs"] = config.get("DEFAULT", "filtered_ifgs")
+    parameters["landmask"] = config.getint("DEFAULT", "landmask")  # 1 to include, 0 to not
 
 except configparser.NoOptionError as e:
     # Error message if a required parameter is missing
@@ -118,10 +120,10 @@ end = parameters["end"]
 interval = parameters["interval"]
 nlook = parameters["nlook"]
 LiCSAR_data = parameters["LiCSAR_data"]
+filtered_ifgs = parameters["filtered_ifgs"]
+landmask = parameters["landmask"]
 
 # hardcoded parameters, not included in the config file
-landmask = 1
-filtered_ifgs = "yes"
 min_baseline = 5
 max_baseline = 366
 
@@ -171,9 +173,12 @@ def read_ifgs(
 
         root_directory = f"/gws/nopw/j04/nceo_geohazards_vol1/public/LiCSAR_products/{track}/{frame}/interferograms/"
     else:
-        root_directory = os.path.join(
-            root_path, "interferograms"
-        )  # Use os.path.join for consistent path construction
+        root_directory = os.path.join(root_path, "interferograms")
+        if not os.path.exists(root_directory):
+            root_directory = os.path.join(root_path, "GEOC")
+        if not os.path.exists(root_directory):
+            print('ERROR - no interferograms exist in the given directory')
+            exit()
 
     ##### Count total files matching the criteria for accurate progress calculation
     print(f"Reading data from the path: {root_directory}")
@@ -191,7 +196,7 @@ def read_ifgs(
     last_date = {}
     n = 0
 
-    if landmask is not None:
+    if landmask == 1:
         if LiCSAR_data == "yes":
             landmask_path = f"/gws/nopw/j04/nceo_geohazards_vol1/public/LiCSAR_products/{track}/{frame}/metadata/{frame}.geo.landmask.tif"
         else:
@@ -359,9 +364,12 @@ def read_coh(start, end, min_baseline, max_baseline, nlook, landmask, interval,
 
         root_directory = f"/gws/nopw/j04/nceo_geohazards_vol1/public/LiCSAR_products/{track}/{frame}/interferograms/"
     else:
-        root_directory = os.path.join(
-            root_path, "interferograms"
-        )  # Use os.path.join for consistent path construction
+        root_directory = os.path.join(root_path, "interferograms")
+        if not os.path.exists(root_directory):
+            root_directory = os.path.join(root_path, "GEOC")
+        if not os.path.exists(root_directory):
+            print('ERROR - no interferograms exist in the given directory')
+            exit()
 
     req_file_name = "geo.cc.tif"
 
@@ -380,7 +388,7 @@ def read_coh(start, end, min_baseline, max_baseline, nlook, landmask, interval,
     last_date = {}
     n = 0
 
-    if landmask is not None:
+    if landmask == 1:
         if LiCSAR_data == "yes":
             landmask_path = f"/gws/nopw/j04/nceo_geohazards_vol1/public/LiCSAR_products/{track}/{frame}/metadata/{frame}.geo.landmask.tif"
         else:
