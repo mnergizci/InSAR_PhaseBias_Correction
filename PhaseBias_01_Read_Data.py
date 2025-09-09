@@ -123,7 +123,7 @@ LiCSAR_data = parameters["LiCSAR_data"]
 filtered_ifgs = parameters["filtered_ifgs"]
 landmask = parameters["landmask"]
 
-breakpoint()
+# breakpoint()
 # hardcoded parameters, not included in the config file
 min_baseline = 5
 max_baseline = 366
@@ -390,6 +390,7 @@ def read_coh(start, end, min_baseline, max_baseline, nlook, landmask, interval,
     n = 0
 
     if landmask == 1:
+        print('DEBUG: landmask is 1')
         if LiCSAR_data == "yes":
             landmask_path = f"/gws/nopw/j04/nceo_geohazards_vol1/public/LiCSAR_products/{track}/{frame}/metadata/{frame}.geo.landmask.tif"
         else:
@@ -408,7 +409,10 @@ def read_coh(start, end, min_baseline, max_baseline, nlook, landmask, interval,
         landmask_dataset = gdal.Open(landmask_path)
         landmask_image = landmask_dataset.ReadAsArray()
         array_landmask = np.array(landmask_image)
-
+    else:
+        print('landmask is '+str(landmask))
+        print(str(type(landmask)))
+    
     n = 1
     # Traverse the root directory and its subdirectories
     for dirpath, dirnames, filenames in os.walk(root_directory):
@@ -469,7 +473,7 @@ def read_coh(start, end, min_baseline, max_baseline, nlook, landmask, interval,
                         # Convert array_data to a float type that can accommodate np.nan
                         array_data = array_data.astype(np.float32)
 
-                        if landmask != 0:
+                        if landmask == 1:
                             array_data[array_landmask != 1] = np.nan
 
                         if (
