@@ -568,7 +568,7 @@ with open(file_path, "wb") as file:  # for writting a dictionary to a file
     pickle.dump(all_ifgs, file)
 ################################################################
 
-all_coh = read_coh(start, end, min_baseline, max_baseline, landmask, nlook,
+all_coh = read_coh(start, end, min_baseline, max_baseline, nlook, landmask,    # landmask, nlook, --- this was in the original....
                    interval, LiCSAR_data)
 
 ## for writting the all_coh
