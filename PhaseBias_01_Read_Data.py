@@ -5,7 +5,7 @@ import re
 from datetime import datetime, timedelta
 import numpy as np
 from osgeo import gdal
-from bin.multilook_w import multilook_w
+from bin.multilook_w import *  # multilook_w
 import configparser
 import sys
 import warnings
@@ -410,9 +410,9 @@ def read_coh(start, end, min_baseline, max_baseline, nlook, landmask, interval,
         landmask_image = landmask_dataset.ReadAsArray()
         array_landmask = np.array(landmask_image)
     else:
-        print('landmask is '+str(landmask))
+        print('DEBUG: landmask is '+str(landmask))
         print(str(type(landmask)))
-    
+
     n = 1
     # Traverse the root directory and its subdirectories
     for dirpath, dirnames, filenames in os.walk(root_directory):
